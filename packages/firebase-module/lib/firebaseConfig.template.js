@@ -1,0 +1,1 @@
+exports.default = <%= options.config %>

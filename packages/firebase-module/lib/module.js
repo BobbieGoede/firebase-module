@@ -1,5 +1,5 @@
 const { resolve } = require('path')
-const { writeFile } = require('fs')
+const { writeFile, readdir } = require('fs')
 const firebase = require('firebase/compat/app')
 const logger = require('./utils/logger')
 const templateUtils = require('./utils/template-utils')
@@ -28,7 +28,7 @@ module.exports = function (moduleOptions) {
   options.config = Object.assign(options.config, runtimeConfig)
   const currentEnv = fireEnv ? fireEnv : getCurrentEnv(options)
 
-  // console.log(options)
+  //   console.log(options)
   validateOptions(options)
 
   options.config = getFinalUseConfigObject(options.config, currentEnv)
@@ -36,7 +36,14 @@ module.exports = function (moduleOptions) {
 
   this.nuxt.hook('listen', async () => {
     writeFile(
-      resolve(
+      r(this.options.buildDir, 'firebase/firebaseConfig.js'),
+      `exports.default = ${JSON.stringify(options.config)}\n//Test`,
+      () => {}
+    )
+    console.log(r(this.options.buildDir, 'firebase/firebaseConfig.js'))
+
+    writeFile(
+      r(
         this.options.srcDir,
         this.options.dir?.static ?? '',
         'firebaseConfig.js'
@@ -85,6 +92,18 @@ module.exports = function (moduleOptions) {
       enabledServices.push(serviceMapping)
     }
   }
+
+  //   console.log(r(this.options.buildDir, 'firebase/firebaseConfig.js'))
+  this.addTemplate({
+    src: r(`firebaseConfig.template.js`),
+    filename: 'firebase/firebaseConfig.js',
+    options: {
+      config: JSON.stringify(options.config),
+    },
+  })
+  readdir(r(this.options.buildDir, 'firebase'), (err, files) => {
+    console.log(files)
+  })
 
   // Register main firebase-module plugin
   this.addPlugin({

@@ -1,6 +1,6 @@
 import admin from 'firebase-admin'
-
-const config = <%= serialize(options.config) %>
+const firebaseConfig = require('./firebaseConfig.js').default
+const config = { ...<%= serialize(options.config) %>, ...firebaseConfig }
 
 const simulateUserRecord = ({
   uid,
