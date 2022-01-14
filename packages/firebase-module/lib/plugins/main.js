@@ -12,7 +12,8 @@ const appConfig = <%= serialize(options.config) %>
 
 export default async (ctx, inject) => {
   const runtimeConfig = ctx.$config && ctx.$config.firebase || {}
-  Object.assign(appConfig, runtimeConfig)
+  const customEnv = ctx.$config && ctx.$config.fireEnv || ''
+  Object.assign(appConfig, options.customEnv && customEnv ? runtimeConfig[customEnv] : runtimeConfig)
 
   <%/****************************************
   **************** LAZY MODE **************

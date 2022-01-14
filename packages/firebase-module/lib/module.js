@@ -16,13 +16,17 @@ module.exports = function (moduleOptions) {
     (nuxt.options.publicRuntimeConfig &&
       nuxt.options.publicRuntimeConfig.firebase) ||
     {}
+  const fireEnv =
+    (nuxt.options.publicRuntimeConfig &&
+      nuxt.options.publicRuntimeConfig.fireEnv) ||
+    ''
   const options = Object.assign(
     defaultOptions,
     this.options.firebase,
     moduleOptions
   )
   options.config = Object.assign(options.config, runtimeConfig)
-  const currentEnv = getCurrentEnv(options)
+  const currentEnv = fireEnv ? fireEnv : getCurrentEnv(options)
 
   // console.log(options)
   validateOptions(options)
