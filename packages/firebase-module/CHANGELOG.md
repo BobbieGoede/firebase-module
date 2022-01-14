@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.3.0](https://github.com/nuxt-community/firebase-module/compare/v8.2.4...v8.3.0) (2022-01-14)
+
+
+### Features
+
+* add fireEnv to runtime config ([bb73a75](https://github.com/nuxt-community/firebase-module/commit/bb73a75eb43388f399337a46a955483f60afc622))
+
 ### [8.2.4](https://github.com/nuxt-community/firebase-module/compare/v8.2.3...v8.2.4) (2022-01-14)
 
 
