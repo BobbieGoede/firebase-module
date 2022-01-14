@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.2.4](https://github.com/nuxt-community/firebase-module/compare/v8.2.3...v8.2.4) (2022-01-14)
+
+
+### Bug Fixes
+
+* missing spread operator on serialized config ([09a3780](https://github.com/nuxt-community/firebase-module/commit/09a3780fcf5df03c9e33ae1192f7103cf3f8138c))
+
 ### [8.2.3](https://github.com/nuxt-community/firebase-module/compare/v8.2.2...v8.2.3) (2022-01-14)
 
 ### [8.2.1](https://github.com/nuxt-community/firebase-module/compare/v8.2.2...v8.2.1) (2022-01-14)
