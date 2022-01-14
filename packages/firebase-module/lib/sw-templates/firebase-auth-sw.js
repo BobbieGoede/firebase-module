@@ -12,7 +12,8 @@ importScripts(
 importScripts(
   'https://www.gstatic.com/firebasejs/<%= options.firebaseVersion %>/firebase-auth-compat.js'
 )
-firebase.initializeApp(<%= serialize(options.config) %>)
+importScripts('/firebaseConfig.js')
+firebase.initializeApp({ <%= serialize(options.config) %>, ...firebaseConfig })
 <% } %>
 
 // Initialize authService

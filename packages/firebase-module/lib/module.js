@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { resolve, join } = require('path')
 const firebase = require('firebase/compat/app')
 const logger = require('./utils/logger')
 const templateUtils = require('./utils/template-utils')
@@ -9,18 +9,37 @@ module.exports = function (moduleOptions) {
   const defaultOptions = {
     injectModule: true,
   }
+  const { nuxt } = this
 
+  const runtimeConfig =
+    (nuxt.options.publicRuntimeConfig &&
+      nuxt.options.publicRuntimeConfig.firebase) ||
+    {}
   const options = Object.assign(
     defaultOptions,
     this.options.firebase,
     moduleOptions
   )
+  options.config = Object.assign(options.config, runtimeConfig)
   const currentEnv = getCurrentEnv(options)
 
+  // console.log(options)
   validateOptions(options)
 
   options.config = getFinalUseConfigObject(options.config, currentEnv)
   validateConfigKeys(options, currentEnv)
+
+  this.nuxt.hook('listen', async () => {
+    writeFile(
+      path.resolve(
+        this.options.srcDir,
+        this.options.dir?.static ?? '',
+        'firebaseConfig.js'
+      ),
+      `const firebaseConfig = ${JSON.stringify(options.config)}`,
+      () => {}
+    )
+  })
 
   // Assign some defaults
   options.services.app = Object.assign({ static: false }, options.services.app)
