@@ -20,20 +20,22 @@ module.exports = function (moduleOptions) {
     (nuxt.options.publicRuntimeConfig &&
       nuxt.options.publicRuntimeConfig.fireEnv) ||
     ''
-  Object.assign(runtimeConfig, fireEnv ? runtimeConfig[fireEnv] : runtimeConfig)
+
   const options = Object.assign(
     defaultOptions,
     this.options.firebase,
     moduleOptions
   )
-  options.config = Object.assign(options.config, runtimeConfig)
-  const currentEnv = fireEnv ? fireEnv : getCurrentEnv(options)
+  const currentEnv = getCurrentEnv(options)
 
-  //   console.log(options)
   validateOptions(options)
 
-  options.config = getFinalUseConfigObject(options.config, currentEnv)
+  options.config = Object.assign(
+    getFinalUseConfigObject(options.config, currentEnv),
+    getFinalUseConfigObject(runtimeConfig, fireEnv)
+  )
   validateConfigKeys(options, currentEnv)
+  console.log(options.config)
 
   this.nuxt.hook('listen', async () => {
     writeFile(
