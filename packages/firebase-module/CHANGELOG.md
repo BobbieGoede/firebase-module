@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.3.2](https://github.com/nuxt-community/firebase-module/compare/v8.3.1...v8.3.2) (2022-01-14)
+
+
+### Bug Fixes
+
+* auth ssr plugin not getting runtime options ([4fc8aef](https://github.com/nuxt-community/firebase-module/commit/4fc8aef3c8e9f4f74f3171e60666c83622dcd4f8))
+
 ### [8.3.1](https://github.com/nuxt-community/firebase-module/compare/v8.3.0...v8.3.1) (2022-01-14)
 
 
