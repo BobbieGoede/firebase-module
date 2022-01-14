@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.2.3](https://github.com/nuxt-community/firebase-module/compare/v8.2.2...v8.2.3) (2022-01-14)
+
 ### [8.2.1](https://github.com/nuxt-community/firebase-module/compare/v8.2.2...v8.2.1) (2022-01-14)
 
 ## [8.2.0](https://github.com/nuxt-community/firebase-module/compare/v8.1.1...v8.2.0) (2022-01-11)
