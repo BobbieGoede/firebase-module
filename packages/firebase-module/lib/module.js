@@ -1,4 +1,5 @@
-const { resolve, join } = require('path')
+const { resolve } = require('path')
+const { writeFile } = require('fs')
 const firebase = require('firebase/compat/app')
 const logger = require('./utils/logger')
 const templateUtils = require('./utils/template-utils')
@@ -31,7 +32,7 @@ module.exports = function (moduleOptions) {
 
   this.nuxt.hook('listen', async () => {
     writeFile(
-      path.resolve(
+      resolve(
         this.options.srcDir,
         this.options.dir?.static ?? '',
         'firebaseConfig.js'
