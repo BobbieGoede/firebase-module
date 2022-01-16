@@ -4,6 +4,9 @@ const isDev = process.env.NODE_ENV === 'development'
 const useEmulators = false // manually change if emulators needed
 
 const config: NuxtConfig = {
+  server: {
+    host: '0.0.0.0',
+  },
   head: {
     title: 'nuxt-firebase-demo',
     meta: [
@@ -14,13 +17,32 @@ const config: NuxtConfig = {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
+  publicRuntimeConfig: (env) => ({
+    firebase:
+      env.FIRE_ENV && env.FIRE_ENV === 'development'
+        ? {
+            apiKey: 'testAIzaSyDa-YwgWTp2GDyVYEfv-XLb62100_HoEvU',
+            authDomain: 'testnuxt-fire-demo.firebaseapp.com',
+            projectId: 'testnuxt-fire-demo',
+            storageBucket: 'testnuxt-fire-demo.appspot.com',
+            messagingSenderId: 'test807370470428',
+            appId: 'test1:807370470428:web:26da98c86c3fd352',
+            measurementId: 'testG-XT6PVC1D4X',
+          }
+        : {
+            apiKey: 'AIzaSyDa-YwgWTp2GDyVYEfv-XLb62100_HoEvU',
+            authDomain: 'nuxt-fire-demo.firebaseapp.com',
+            projectId: 'nuxt-fire-demo',
+            storageBucket: 'nuxt-fire-demo.appspot.com',
+            messagingSenderId: '807370470428',
+            appId: '1:807370470428:web:26da98c86c3fd352',
+            measurementId: 'G-XT6PVC1D4X',
+          },
+  }),
+
   components: true,
 
-  buildModules: [
-    '@nuxt/typescript-build',
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/firebase',
-  ],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/tailwindcss'],
 
   firebase: {
     lazy: false,
@@ -90,10 +112,13 @@ const config: NuxtConfig = {
     },
   },
 
-  modules: ['@nuxtjs/pwa'],
+  modules: ['@nuxtjs/pwa', '@nuxtjs/firebase'],
   // plugins: ['~/plugins/lazyMode'],
 
-  build: {},
+  build: {
+	  parallel: true,
+	  cache: true,
+  },
 
   /*
    ** Nuxt.js Middleware
