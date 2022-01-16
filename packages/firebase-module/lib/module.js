@@ -2,6 +2,9 @@ const { resolve } = require('path')
 const firebase = require('firebase/compat/app')
 const logger = require('./utils/logger')
 const templateUtils = require('./utils/template-utils')
+const renderTemplate = require('lodash/template')
+const { writeFile, readFile } = require('fs/promises')
+const serialize = require('serialize-javascript')
 
 const r = (...path) => resolve(__dirname, ...path)
 
@@ -10,12 +13,18 @@ module.exports = function (moduleOptions) {
     injectModule: true,
   }
 
+  const publicRuntimeConfig = this.nuxt.options.publicRuntimeConfig
+  const runtimeConfig =
+    (publicRuntimeConfig && publicRuntimeConfig.firebase) || {}
+
   const options = Object.assign(
     defaultOptions,
     this.options.firebase,
     moduleOptions
   )
+  options.config = Object.assign(options.config, runtimeConfig)
   const currentEnv = getCurrentEnv(options)
+  //   console.log(options)
 
   validateOptions(options)
 
@@ -63,15 +72,13 @@ module.exports = function (moduleOptions) {
   }
 
   // Register main firebase-module plugin
-  this.addPlugin({
+  const mainPluginOptions = {
     src: r('plugins/main.js'),
     fileName: 'firebase/index.js',
-    options: {
-      ...options,
-      ...templateUtils,
-      enabledServices,
-    },
-  })
+    options: { ...options, ...templateUtils, enabledServices },
+  }
+  this.addPlugin(mainPluginOptions)
+  addRuntimePlugin.call(this, mainPluginOptions)
 
   // add ssrAuth plugin last
   // so res object is augmented for other plugins of this module
@@ -92,7 +99,7 @@ function addServiceWorker(
   templateOptions = {}
 ) {
   // Add Service Worker Template
-  this.addTemplate({
+  const serviceWorkerOptions = {
     src: r(`sw-templates/${templateFile}`),
     fileName: resolve(
       this.options.srcDir,
@@ -106,7 +113,31 @@ function addServiceWorker(
         process.env.NODE_ENV === 'production' ? onFirebaseHosting : false,
       ...templateOptions,
     },
+  }
+  this.addTemplate(serviceWorkerOptions)
+
+  this.nuxt.hook('listen', () => {
+    addRuntimeTemplate.call(this, serviceWorkerOptions)
   })
+}
+
+function addRuntimeFile({ src, fileName, options }) {
+  readFile(src, 'utf-8').then((template) => {
+    const compileTemplate = renderTemplate(template, { imports: { serialize } })
+
+    writeFile(
+      fileName,
+      compileTemplate({ options, globals: { nuxt: '$nuxt' } })
+    )
+  })
+}
+
+function addRuntimeTemplate({ src, fileName, options }) {
+  addRuntimeFile({ src, fileName, options })
+}
+
+function addRuntimePlugin({ src, fileName, options }) {
+  addRuntimeFile({ src, fileName: r(this.options.buildDir, fileName), options })
 }
 
 /**
@@ -214,16 +245,22 @@ function loadAuth(options) {
     })
   }
 
+  const pluginOptions = {
+    src: r('plugins/services/auth.ssr.js'),
+    fileName: 'firebase/service.auth.ssr-server.js',
+    mode: 'server',
+    options: {
+      credential,
+      config: options.config,
+    },
+  }
+
+  this.nuxt.hook('listen', () => {
+    addRuntimePlugin.call(this, pluginOptions)
+  })
+
   return () => {
-    this.addPlugin({
-      src: r('plugins/services/auth.ssr.js'),
-      fileName: 'firebase/service.auth.ssr-server.js',
-      mode: 'server',
-      options: {
-        credential,
-        config: options.config,
-      },
-    })
+    this.addPlugin(pluginOptions)
   }
 }
 

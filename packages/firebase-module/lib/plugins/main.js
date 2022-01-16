@@ -11,7 +11,6 @@ for (const service of enabledServices) { %>
 const appConfig = <%= serialize(options.config) %>
 
 export default async (ctx, inject) => {
-
   <%/****************************************
   **************** LAZY MODE **************
   ****************************************/%>
