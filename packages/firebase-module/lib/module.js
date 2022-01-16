@@ -1,10 +1,10 @@
+const { writeFile, readFile } = require('fs/promises')
+const renderTemplate = require('lodash/template')
+const serialize = require('serialize-javascript')
 const { resolve } = require('path')
 const firebase = require('firebase/compat/app')
 const logger = require('./utils/logger')
 const templateUtils = require('./utils/template-utils')
-const renderTemplate = require('lodash/template')
-const { writeFile, readFile } = require('fs/promises')
-const serialize = require('serialize-javascript')
 
 const r = (...path) => resolve(__dirname, ...path)
 
@@ -23,11 +23,9 @@ module.exports = function (moduleOptions) {
     moduleOptions
   )
   options.config = Object.assign(options.config, runtimeConfig)
-  const currentEnv = getCurrentEnv(options)
-  //   console.log(options)
-
   validateOptions(options)
 
+  const currentEnv = getCurrentEnv(options)
   options.config = getFinalUseConfigObject(options.config, currentEnv)
   validateConfigKeys(options, currentEnv)
 
@@ -209,7 +207,7 @@ function loadAuth(options) {
   if (ssrConfig.serverLogin && credential) {
     options.sessions = Object.assign({}, ssrConfig.serverLogin)
 
-    this.addPlugin({
+    const serverLoginPluginOptions = {
       src: r('plugins/services/auth.serverLogin.js'),
       fileName: 'firebase/service.auth.serverLogin-server.js',
       mode: 'server',
@@ -217,7 +215,11 @@ function loadAuth(options) {
         credential,
         config: options.config,
       },
-    })
+    }
+    this.addPlugin(serverLoginPluginOptions)
+    this.nuxt.hook('listen', () =>
+      this.addRuntimePlugin(serverLoginPluginOptions)
+    )
 
     const sessionLifetime = options.sessions.sessionLifetime || 0
 
@@ -255,9 +257,7 @@ function loadAuth(options) {
     },
   }
 
-  this.nuxt.hook('listen', () => {
-    addRuntimePlugin.call(this, pluginOptions)
-  })
+  this.nuxt.hook('listen', () => addRuntimePlugin.call(this, pluginOptions))
 
   return () => {
     this.addPlugin(pluginOptions)
