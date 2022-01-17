@@ -76,7 +76,9 @@ module.exports = function (moduleOptions) {
     options: { ...options, ...templateUtils, enabledServices },
   }
   this.addPlugin(mainPluginOptions)
-  addRuntimePlugin.call(this, mainPluginOptions)
+  this.nuxt.hook('listen', () => {
+    addRuntimePlugin.call(this, mainPluginOptions)
+  })
 
   // add ssrAuth plugin last
   // so res object is augmented for other plugins of this module
@@ -120,6 +122,7 @@ function addServiceWorker(
 }
 
 function addRuntimeFile({ src, fileName, options }) {
+  console.log(`Updating ${fileName}`)
   readFile(src, 'utf-8').then((template) => {
     const compileTemplate = renderTemplate(template, { imports: { serialize } })
 
@@ -217,9 +220,9 @@ function loadAuth(options) {
       },
     }
     this.addPlugin(serverLoginPluginOptions)
-    this.nuxt.hook('listen', () =>
-      this.addRuntimePlugin(serverLoginPluginOptions)
-    )
+    this.nuxt.hook('listen', () => {
+      addRuntimePlugin.call(this, serverLoginPluginOptions)
+    })
 
     const sessionLifetime = options.sessions.sessionLifetime || 0
 
