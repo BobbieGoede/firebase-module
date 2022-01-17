@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.4.1](https://github.com/nuxt-community/firebase-module/compare/v8.4.0...v8.4.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* main plugin not updating ([027a957](https://github.com/nuxt-community/firebase-module/commit/027a95713d5ad9f9ad034cf8911a039d29d17be9))
+
 ## [8.4.0](https://github.com/nuxt-community/firebase-module/compare/v8.2.0...v8.4.0) (2022-01-17)
 
 
