@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.4.0](https://github.com/nuxt-community/firebase-module/compare/v8.2.0...v8.4.0) (2022-01-17)
+
+
+### Features
+
+* add lodash and serialize-javascript dependencies ([1968aa4](https://github.com/nuxt-community/firebase-module/commit/1968aa4446eb786a9f781d2f4119e4b41ee42fda))
+* add runtime config values to demo for testing ([7fa188a](https://github.com/nuxt-community/firebase-module/commit/7fa188a5aeb4423cfb66103919187fbb2b138380))
+* overwrite files on listen with runtime config variables ([070ac40](https://github.com/nuxt-community/firebase-module/commit/070ac4028624351c541391121fba5481bdca3dcb))
+
+
+### Bug Fixes
+
+* add runtime compile for server login plugin ([791823a](https://github.com/nuxt-community/firebase-module/commit/791823a1f67f8d22d9858febea12e0363bcb6d16))
+
 ## [8.2.0](https://github.com/nuxt-community/firebase-module/compare/v8.1.1...v8.2.0) (2022-01-11)
 
 
