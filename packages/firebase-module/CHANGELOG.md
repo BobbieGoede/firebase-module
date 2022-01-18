@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.3.0](https://github.com/nuxt-community/firebase-module/compare/v8.2.0...v8.3.0) (2022-01-18)
+
+
+### Features
+
+* add runtime config support ([a129dd0](https://github.com/nuxt-community/firebase-module/commit/a129dd0bbe4e64a0748f71b9dfe5d029be99b6eb))
+* recompile templates on startup for ssr runtime config support ([75f1293](https://github.com/nuxt-community/firebase-module/commit/75f1293396df242e720e7573d29c872b4047b2c4))
+
 ### [8.2.2](https://github.com/nuxt-community/firebase-module/compare/v8.2.0...v8.2.2) (2022-01-24)
 
 ## [8.2.0](https://github.com/nuxt-community/firebase-module/compare/v8.1.1...v8.2.0) (2022-01-11)
